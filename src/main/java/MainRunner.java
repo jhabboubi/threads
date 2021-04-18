@@ -1,7 +1,8 @@
 public class MainRunner {
     public static void main(String[] args) throws InterruptedException {
-
+        //create new object of Countdown here
         Countdown countdown = new Countdown();
+
 
 
         CountdownThread t1 = new CountdownThread(countdown);
@@ -10,16 +11,15 @@ public class MainRunner {
         t2.setName("Thread 2");
 
         t1.start();
-
         t2.start();
-        Thread.sleep(10);
+
 
     }
 
 
 }
 
-
+//class to countdown to 10 and change color depending on name of thread
 class Countdown {
     private int i;
     public void doCountdown(){
@@ -34,13 +34,17 @@ class Countdown {
             default:
                 color = ThreadColor.ANSI_GREEN;
         }
-
-        for(this.i=10;i>0;i--){
-            System.out.println(color + Thread.currentThread().getName() + ": i =" + i);
+        // try this object
+        // color here is local variable
+        synchronized (color) {
+            for (this.i = 10; i > 0; i--) {
+                System.out.println(color + Thread.currentThread().getName() + ": i =" + i);
+            }
         }
     }
 }
 
+//class to run on a thread
 class CountdownThread extends Thread {
     private Countdown threadCountdown;
     public CountdownThread(Countdown countdown){
